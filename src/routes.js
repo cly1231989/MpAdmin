@@ -10,6 +10,11 @@ import SettingView from './components/views/Setting.vue'
 import AccessView from './components/views/Access.vue'
 import ServerView from './components/views/Server.vue'
 import ReposView from './components/views/Repos.vue'
+import PatientsView from './components/views/PatientList.vue'
+import DatasView from './components/views/DataList.vue'
+import UsersView from './components/views/UserList.vue'
+import TerminalsView from './components/views/TerminalList.vue'
+import TerminalBindingsView from './components/views/TerminalBindingList.vue'
 
 // Routes
 const routes = [
@@ -18,8 +23,9 @@ const routes = [
     component: LoginView
   },
   {
-    path: '/',
+    path: '/admin',
     component: DashView,
+    meta: { auth: true },
     children: [
       {
         path: 'dashboard',
@@ -57,6 +63,31 @@ const routes = [
         component: ReposView,
         name: 'Repository',
         meta: {description: 'List of popular javascript repos'}
+      },
+      {
+        path: 'patients',
+        component: PatientsView,
+        name: 'Patients'
+      },
+      {
+        path: 'users',
+        component: UsersView,
+        name: 'Users'
+      },
+      {
+        path: 'terminals',
+        component: TerminalsView,
+        name: 'Terminals'
+      },
+      {
+        path: 'terminalbindings',
+        component: TerminalBindingsView,
+        name: 'Terminalbindings'
+      },
+      {
+        path: 'datas',
+        component: DatasView,
+        name: 'Datas'
       }
     ]
   }, {

@@ -82,6 +82,33 @@
         <span class="page"> 404</span>
       </router-link>
     </li>
+
+    <li class="header">MANAGE</li>
+    <li class="pageLink" v-on:click="toggleMenu">
+      <router-link to="/users"><i class="fa fa-user"></i>
+        <span class="page">用户管理</span>
+      </router-link>
+    </li>
+    <li class="pageLink" v-on:click="toggleMenu">
+      <router-link to="/terminals"><i class="fa fa-heart"></i>
+        <span class="page">终端管理</span>
+      </router-link>
+    </li>
+    <li class="pageLink" v-on:click="toggleMenu">
+      <router-link to="/terminalbindings"><i class="fa fa-heartbeat"></i>
+        <span class="page">终端使用</span>
+      </router-link>
+    </li>
+    <li class="pageLink" v-on:click="toggleMenu">
+      <router-link to="/patients"><i class="fa fa-user-md"></i>
+        <span class="page">病人列表</span>
+      </router-link>
+    </li>
+    <li class="pageLink" v-on:click="toggleMenu">
+      <router-link to="/datas"><i class="fa fa-database"></i>
+        <span class="page">数据列表</span>
+      </router-link>
+    </li>
   </ul>
 </template>
 <script>

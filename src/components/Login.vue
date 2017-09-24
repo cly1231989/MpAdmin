@@ -29,6 +29,7 @@
 
 <script>
 import api from '../api'
+import auth from '../auth'
 
 export default {
   name: 'Login',
@@ -50,7 +51,7 @@ export default {
       this.$store.commit('TOGGLE_LOADING')
 
       /* Making API call to authenticate a user */
-      api.request('post', '/login', {username, password})
+      api.request('post', '/auth/login', {username, password})
       .then(response => {
         this.toggleLoading()
 
@@ -70,25 +71,28 @@ export default {
         }
 
         /* Setting user in the state and caching record to the localStorage */
-        if (data.user) {
-          var token = 'Bearer ' + data.token
+        auth.saveAuthInfo(data.token, true)
+        this.$router.push(this.$route.query.redirect)
+        // if (data.user) {
+        //   var token = 'Bearer ' + data.token
+        //   Vue.http.headers.common['Authorization'] = token;
 
-          this.$store.commit('SET_USER', data.user)
-          this.$store.commit('SET_TOKEN', token)
+        //   this.$store.commit('SET_USER', data.user)
+        //   this.$store.commit('SET_TOKEN', token)
 
-          if (window.localStorage) {
-            window.localStorage.setItem('user', JSON.stringify(data.user))
-            window.localStorage.setItem('token', token)
-          }
+        //   if (window.localStorage) {
+        //     window.localStorage.setItem('user', JSON.stringify(data.user))
+        //     window.localStorage.setItem('jwt_token', token)
+        //   }
 
-          this.$router.push(data.redirect)
-        }
+        //   this.$router.push(data.redirect)
+        // }
       })
       .catch(error => {
         this.$store.commit('TOGGLE_LOADING')
-        console.log(error)
+        console.log('error: ' + error)
 
-        this.response = 'Server appears to be offline'
+        this.response = error.toString()
         this.toggleLoading()
       })
     },

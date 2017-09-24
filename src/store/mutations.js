@@ -10,5 +10,11 @@ export default {
   },
   SET_TOKEN (state, token) {
     state.token = token
+  },
+  SET_USERID (state, userId) {
+    state.userId = userId
+  },
+  SET_USERNAME (state, name) {
+    state.userName = name
   }
 }

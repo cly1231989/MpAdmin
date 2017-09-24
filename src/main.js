@@ -5,6 +5,7 @@ import VueRouter from 'vue-router'
 import { sync } from 'vuex-router-sync'
 import routes from './routes'
 import store from './store'
+import auth from './auth'
 
 // Import Helpers for filters
 import { domain, count, prettyDate, pluralize } from './filters'
@@ -29,10 +30,33 @@ var router = new VueRouter({
   }
 })
 
+// Check local storage to handle refreshes
+if (window.localStorage) {
+  window.console.log('refresh...')
+  var token = auth.getToken()
+  if (token !== null) {
+    window.console.log('token: ' + token)
+    auth.saveAuthInfo(token, false)
+  }
+  // var localUserString = window.localStorage.getItem('user') || 'null'
+  // var localUser = JSON.parse(localUserString)
+
+  // if (localUser && store.state.user !== localUser) {
+  //   store.commit('SET_USER', localUser)
+  //   store.commit('SET_TOKEN', window.localStorage.getItem('token'))
+  // }
+}
+
 // Some middleware to help us ensure the user is authenticated.
 router.beforeEach((to, from, next) => {
   // window.console.log('Transition', transition)
-  if (to.auth && (to.router.app.$store.state.token === 'null')) {
+  // window.console.log('to.meta.auth: ' + to.meta.auth)
+
+  // if (store.state.token !== null) {
+  //   window.console.log(store.state.token)
+  // }
+
+  if (to.matched.some(record => record.meta.auth) && (store.state.token === null)) {
     window.console.log('Not authenticated')
     next({
       path: '/login',
@@ -53,14 +77,3 @@ new Vue({
   store: store,
   render: h => h(AppView)
 })
-
-// Check local storage to handle refreshes
-if (window.localStorage) {
-  var localUserString = window.localStorage.getItem('user') || 'null'
-  var localUser = JSON.parse(localUserString)
-
-  if (localUser && store.state.user !== localUser) {
-    store.commit('SET_USER', localUser)
-    store.commit('SET_TOKEN', window.localStorage.getItem('token'))
-  }
-}

@@ -5,6 +5,8 @@
 </template>
 
 <script>
+  import auth from '../auth'
+
   export default {
     name: 'App',
     data () {
@@ -14,14 +16,7 @@
     },
     methods: {
       logout () {
-        this.$store.commit('SET_USER', null)
-        this.$store.commit('SET_TOKEN', null)
-
-        if (window.localStorage) {
-          window.localStorage.setItem('user', null)
-          window.localStorage.setItem('token', null)
-        }
-
+        auth.clearAuthInfo()
         this.$router.push('/login')
       }
     }
