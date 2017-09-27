@@ -6,6 +6,8 @@ export default {
   userName: null,
   userId: null,
   token: null,
+  expire: null,
+  refreshTimer: null,
   userInfo: {
     messages: [{1: 'test', 2: 'test'}],
     notifications: [],

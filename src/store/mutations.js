@@ -16,5 +16,11 @@ export default {
   },
   SET_USERNAME (state, name) {
     state.userName = name
+  },
+  SET_EXPIRE (state, expire) {
+    state.expire = expire
+  },
+  SET_REFRESHTIMER (state, refreshTimer) {
+    state.refreshTimer = refreshTimer
   }
 }

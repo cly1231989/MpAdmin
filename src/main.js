@@ -56,7 +56,9 @@ router.beforeEach((to, from, next) => {
   //   window.console.log(store.state.token)
   // }
 
-  if (to.matched.some(record => record.meta.auth) && (store.state.token === null)) {
+  window.console.log('store.state.expire: ' + store.state.expire)
+  window.console.log('now: ' + Date.now())
+  if (to.matched.some(record => record.meta.auth) && ((store.state.token === null) || (store.state.expire < Date.now()))) {
     window.console.log('Not authenticated')
     next({
       path: '/login',

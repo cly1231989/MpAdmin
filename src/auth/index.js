@@ -1,28 +1,46 @@
 import jwtDecode from 'jwt-decode'
 import axios from 'axios'
 import store from '../store'
+import api from '../api'
+
+function saveAuthInfoImp (token, saveToLocalStorage) {
+  axios.defaults.headers.common['Authorization'] = 'Bearer ' + token
+  var userInfo = jwtDecode(token)
+  window.console.log('userInfo.name: ' + userInfo.name)
+
+  store.commit('SET_USER', userInfo.sub)
+  store.commit('SET_USERID', userInfo.userId)
+  store.commit('SET_USERNAME', userInfo.name)
+  store.commit('SET_EXPIRE', userInfo.exp * 1000)
+  store.commit('SET_TOKEN', token)
+
+  if (saveToLocalStorage && window.localStorage) {
+    window.localStorage.setItem('jwt_token', token)
+  }
+}
 
 export default {
   saveAuthInfo (token, saveToLocalStorage) {
-    // Vue.http.headers.common['Authorization'] = 'Bearer ' + token
-    axios.defaults.headers.common['header1'] = 'Bearer ' + token
+    saveAuthInfoImp(token, saveToLocalStorage)
 
-    var userInfo = jwtDecode(token)
-    window.console.log('userInfo.name: ' + userInfo.name)
-
-    store.commit('SET_USER', userInfo.sub)
-    store.commit('SET_USERID', userInfo.userId)
-    store.commit('SET_USERNAME', userInfo.name)
-    store.commit('SET_TOKEN', token)
-
-    if (saveToLocalStorage && window.localStorage) {
-      window.localStorage.setItem('jwt_token', token)
-    }
+    // todo: 开个定时器，刷新token
+    var refreshTimer = setInterval(function () {
+      window.console.log('refresh token')
+      api.request('get', '/auth/refresh', null)
+      .then(response => {
+        var data = response.data
+        if (!data.error) {
+          window.console.log('refresh token: ', data.token)
+          saveAuthInfoImp(data.token, true)
+        }
+      })
+    }, 1000 * 30)
+    store.commit('SET_REFRESHTIMER', refreshTimer)
   },
 
   clearAuthInfo () {
     // Vue.http.headers.common['Authorization'] = ''
-    axios.defaults.headers.common['header1'] = ''
+    axios.defaults.headers.common['Authorization'] = ''
 
     store.commit('SET_USER', null)
     store.commit('SET_USERID', null)

@@ -16,6 +16,7 @@
     },
     methods: {
       logout () {
+        clearInterval(this.$store.refreshTimer)
         auth.clearAuthInfo()
         this.$router.push('/login')
       }
