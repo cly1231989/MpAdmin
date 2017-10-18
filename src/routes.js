@@ -72,7 +72,7 @@ const routes = [
       {
         path: 'users',
         component: UsersView,
-        name: 'Users'
+        name: '用户管理'
       },
       {
         path: 'terminals',
