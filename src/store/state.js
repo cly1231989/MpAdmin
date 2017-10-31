@@ -5,6 +5,7 @@ export default {
   user: null,
   userName: null,
   userId: null,
+  type: null,
   token: null,
   expire: null,
   refreshTimer: null,

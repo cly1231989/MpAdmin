@@ -13,6 +13,7 @@ function saveAuthInfoImp (token, saveToLocalStorage) {
   store.commit('SET_USERNAME', userInfo.name)
   store.commit('SET_EXPIRE', userInfo.exp * 1000)
   store.commit('SET_TOKEN', token)
+  store.commit('SET_TYPE', userInfo.type)
 
   if (saveToLocalStorage && window.localStorage) {
     window.localStorage.setItem('jwt_token', token)

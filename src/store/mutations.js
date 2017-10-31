@@ -17,6 +17,9 @@ export default {
   SET_USERNAME (state, name) {
     state.userName = name
   },
+  SET_TYPE (state, type) {
+    state.type = type
+  },
   SET_EXPIRE (state, expire) {
     state.expire = expire
   },

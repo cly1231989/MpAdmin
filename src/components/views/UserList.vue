@@ -1,150 +1,192 @@
 <template>
-  <section class='content'>
-    <div class='row center-block'>
-      <h2>用户列表</h2>
-      <div class='col-md-12'>
-        <div class='box'>
-          <div class='box-body'>
-            <div class='dataTables_wrapper form-inline dt-bootstrap' id='example1_wrapper'>
-              <div class='row'>
-                <div class='col-sm-12 table-responsive'>
-                  <table role='grid' id='example1' class='table table-bordered table-striped dataTable'>
-                    <thead>
-                      <tr role='row'>
-                        <th aria-sort='ascending' class='sorting_asc'>索引</th>
-                        <th>用户</th>
-                        <th>姓名</th>
-                        <th>年龄</th>
-                        <th>性别</th>
-                        <th>门诊号</th>
-                        <th>住院号</th>
-                        <th>床号</th>
-                        <th>症状</th>
-                        <th>申请医生</th>
-                        <th>护士</th>
-                        <th>护理等级</th>
-                        <th>费别</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr class='even' role='row'>
-                        <td class='sorting_1'>Blink</td>
-                        <td>Iridium  54.0</td>
-                        <td>GNU/Linux</td>
-                        <td>54</td>
-                        <td>A</td>
-                        <td>Iridium  54.0</td>
-                        <td>GNU/Linux</td>
-                        <td>54</td>
-                        <td>A</td>
-                        <td>Iridium  54.0</td>
-                        <td>GNU/Linux</td>
-                        <td>54</td>
-                        <td>A</td>
-                      </tr>
-                    </tbody>              
-                  </table>
-                </div>
+  <div>
+    <edit-user-modal
+      :select-user="selectUser"
+      :accountReadOnly="accountReadOnly"
+      v-if="showEditUserModal"
+      @editUserOk="onEditUserOk"
+      @close="showEditUserModal = false">
+    </edit-user-modal>
+
+    <section class='content'>
+      <div class='row center-block'>
+        <div class='col-md-12 white-bg'>
+          <filter-bar search-text-place-holder="请输入账号或者用户名"
+                      :show-new-btn="true"
+                      new-btn-title="新增用户">
+          </filter-bar>
+          <vuetable ref="vuetable"
+            api-url="http://localhost:8080/user/all"
+            :fields="fields"
+            pagination-path=""
+            :per-page="20" 
+            @vuetable:pagination-data="onPaginationData"
+            :append-params="moreParams"
+            :css="css.table"
+          >              
+            <template slot="actions" scope="props">
+              <div class="custom-actions">              
+                <button class="btn btn-xs btn-primary"
+                  @click="onEditUser(props.rowData, props.rowIndex)">
+                  <i class="fa fa-pencil-square-o"></i>
+                </button>
+                <!--
+                <button class="btn btn-xs btn-danger"
+                  @click="onAction('delete-item', props.rowData, props.rowIndex)">
+                  <i class="fa fa-times"></i>
+                </button>!-->
               </div>
-            </div>
-            <!-- /.box-body -->
+            </template>
+          </vuetable>
+          <div>
+            <vuetable-pagination-info ref="paginationInfo"
+              info-class="pull-left"
+            ></vuetable-pagination-info>
+            <vuetable-pagination-bootstrap ref="pagination" 
+              class="pull-right"
+              @vuetable-pagination:change-page="onChangePage"
+            ></vuetable-pagination-bootstrap>
           </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
+  </div>
 </template>
 
 <script>
-import $ from 'jquery'
-// Require needed datatables modules
-import 'datatables.net'
-import 'datatables.net-bs'
-import store from '../../store'
+import Vuetable from 'vuetable-2/src/components/Vuetable'
+import VuetablePaginationInfo from 'vuetable-2/src/components/VuetablePaginationInfo'
+import VuetablePaginationBootstrap from '../VuetablePaginationBootstrap'
+import Vue from 'vue'
+import FilterBar from '../FilterBar'
+import VueEvents from 'vue-events'
+import CssConfig from '../style'
+import EditUserModal from './EditUserModal'
+
+Vue.use(VueEvents)
+Vue.component('filter-bar', FilterBar)
 
 export default {
   name: 'users',
+  components: {
+    Vuetable,
+    VuetablePaginationBootstrap,
+    VuetablePaginationInfo,
+    EditUserModal
+  },
   mounted () {
-    this.$nextTick(() => {
-      $('#example1').DataTable({
-        'oLanguage': {
-          'sProcessing': '正在加载中......',
-          'sLengthMenu': '每页显示 _MENU_ 条记录',
-          'sZeroRecords': '对不起，查询不到相关数据！',
-          'sEmptyTable': '表中无数据存在！',
-          'sInfo': '当前显示 _START_ 到 _END_ 条，共 _TOTAL_ 条记录',
-          'sInfoFiltered': '数据表中共为 _MAX_ 条记录',
-          'sSearch': '搜索',
-          'oPaginate': {
-            'sFirst': '首页',
-            'sPrevious': '上一页',
-            'sNext': '下一页',
-            'sLast': '末页'
-          }
+    this.$events.$on('filter-set', eventData => this.onFilterSet(eventData))
+    this.$events.$on('filter-reset', e => this.onFilterReset())
+    this.$events.$on('new-item', e => this.onNewUser())
+  },
+  data () {
+    return {
+      selectUser: null,
+      accountReadOnly: true,
+      showEditUserModal: false,
+      css: CssConfig,
+      moreParams: {},
+      fields: [
+        {
+          name: '__sequence',
+          title: '#',
+          titleClass: 'center aligned',
+          dataClass: 'right aligned'
         },
-        'serverSide': true,
-        'ajax': {
-          'url': 'http://127.0.0.1:8080/user/all',
-          'type': 'GET',
-          'beforeSend': function (request) {
-            request.setRequestHeader('Authorization', 'Bearer ' + store.state.token)
-          }
+        {
+          name: 'parentFullName',
+          title: '上级用户'
+        },
+        {
+          name: 'name',
+          title: '用户名'
+          // sortField: 'name',
+          // titleClass: 'center aligned',
+          // dataClass: 'right aligned',
+          // callback: 'formatNumber',
+          // visible: false
+        },
+        {
+          name: 'account',
+          title: '账号'
+        },
+        {
+          name: 'pwd',
+          title: '密码'
+        },
+        {
+          name: 'phone',
+          title: '电话'
+        },
+        {
+          name: 'address',
+          title: '地址'
+        },
+        {
+          name: 'userType',
+          title: '类型'
+        },
+        {
+          name: 'spo2Warning',
+          title: '血氧开关',
+          callback: 'formatSwitch'
+        },
+        {
+          name: 'btwarning',
+          title: '体温开关',
+          callback: 'formatSwitch'
+        },
+        {
+          name: 'bpshowMode',
+          title: '血压显示模式'
+        },
+        {
+          name: '__slot:actions',   // <----
+          title: '操作',
+          titleClass: 'center aligned',
+          dataClass: 'center aligned'
         }
-        // 'bAutoWidth': false, // 自动适应宽度
-        // 'bFilter': false, // 查询
-        // 'bSort': true, // 排序
-        // 'bInfo': false, // 页脚信息
-        // 'bLengthChange': false, // 改变每页显示数据数量
-        // 'bServerSide': true, // 服务器数据
-        // 'sAjaxSource': '/XXX/XXX/GetList',
-        // 'bProcessing': true, // 当datatable获取数据时候是否显示正在处理提示信息
-        // 'bPaginate': true, // 显示分页器
-        // 'iDisplayLength ': 10, // 一页显示条数
-        // 'aoColumns': [
-        //   {
-        //     // 自定义列
-        //     'sName': 'Id',        // Ajax提交时的列明（此处不太明白，为什么用两个属性--sName，mDataProp）
-        //     'mDataProp': 'Id',    // 获取数据列名
-        //     'sClass': 'center',    // 样式
-        //     'bStorable': false,    // 该列不排序
-        //     'render': function (data, type, row) {    // 列渲染
-        //       return '<label class="position-relative">' +
-        //       '<input type="checkbox" class="ace" value="' + data + '"/>' +
-        //       '<span class="lbl"></span>' +
-        //       '</label>'
-        //     }
-        //   },
-        //   {
-        //     'sName': 'Name',
-        //     'mDataProp': 'Name',
-        //     'bSearchable': true,    // 检索可用
-        //     'bStorable': true
-        //   },
-        //   {
-        //     'sName': 'CustomerSN',
-        //     'mDataProp': 'CustomerSN',
-        //     'bSearchable': false,
-        //     'bStorable': false
-        //   },
-        //   {
-        //     'mDataProp': 'City',
-        //     'sName': 'City'
-        //   },
-        //   {
-        //     'sName': 'Address',
-        //     'mDataProp': 'Address'
-        //   },
-        //   {
-        //     'sName': 'Contact',
-        //     'mDataProp': 'Contact'
-        //   },
-        //   {
-        //     'sName': 'ContactPhone',
-        //     'mDataProp': 'ContactPhone'
-        //   }
-        // ]
-      })
-    })
+      ]
+    }
+  },
+  methods: {
+    onPaginationData (paginationData) {
+      this.$refs.pagination.setPaginationData(paginationData)
+      this.$refs.paginationInfo.setPaginationData(paginationData)
+    },
+    onChangePage (page) {
+      this.$refs.vuetable.changePage(page)
+    },
+    onEditUser (data, index) {
+      window.console.log(data)
+      this.selectUser = data
+      this.accountReadOnly = true
+      this.showEditUserModal = true
+      console.log(data.name, index)
+    },
+    onFilterSet (filterText) {
+      this.moreParams = {
+        'filter': filterText
+      }
+      Vue.nextTick(() => this.$refs.vuetable.refresh())
+    },
+    onFilterReset () {
+      this.moreParams = {}
+      Vue.nextTick(() => this.$refs.vuetable.refresh())
+    },
+    onNewUser () {
+      this.selectUser = {type: null, account: '', name: '', pwd: '', parentuserid: null}
+      this.accountReadOnly = false
+      this.showEditUserModal = true
+    },
+    onEditUserOk (user) {
+      this.showEditUserModal = false
+      Object.assign(this.selectUser, user)
+      Vue.nextTick(() => this.$refs.vuetable.refresh())
+    },
+    formatSwitch (value) {
+      return value === false ? '关' : '开'
+    }
   }
 }
 </script>
@@ -177,5 +219,10 @@ table.dataTable thead .sorting_asc:after {
 
 table.dataTable thead .sorting_desc:after {
   content: '\f0de';
+}
+
+.white-bg {
+  background-color: #fff;
+  padding-top: 20px;
 }
 </style>
