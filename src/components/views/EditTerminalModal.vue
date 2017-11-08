@@ -66,9 +66,15 @@ export default {
         return
       }
 
-      api.request('post', '/terminal/edit', this.user)
-      .then(response => {
-        this.$emit('editTerminalOk', this.user)
+      var promise = null
+      if (this.terminalId === 0) {
+        promise = api.request('post', '/terminals', {'id': 0, 'terminalnumber': this.terNum})
+      } else {
+        promise = api.request('put', '/terminals/' + this.terminalId, {'id': this.terminalId, 'terminalnumber': this.terNum})
+      }
+      
+      promise.then(response => {
+        this.$emit('editTerminalOk', this.terNum)
       })
       .catch(error => {
         this.failedReason = error

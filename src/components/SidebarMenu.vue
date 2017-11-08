@@ -95,11 +95,6 @@
       </router-link>
     </li>
     <li class="pageLink" v-on:click="toggleMenu">
-      <router-link to="/terminalbindings"><i class="fa fa-heartbeat"></i>
-        <span class="page">终端使用</span>
-      </router-link>
-    </li>
-    <li class="pageLink" v-on:click="toggleMenu">
       <router-link to="/patients"><i class="fa fa-user-md"></i>
         <span class="page">病人列表</span>
       </router-link>

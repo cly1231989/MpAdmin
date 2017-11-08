@@ -8,22 +8,39 @@
       @close="showEditTerminalModal = false">
     </edit-terminal-modal>
 
+    <confirm-modal
+      title="删除"
+      text="确定删除该终端？"
+      v-if="showConfirmModal"
+      @cancel="showConfirmModal = false"
+      @confirm="onConfirm">
+    </confirm-modal>
+
     <section class='content'>
       <div class='row center-block'>
         <div class='col-md-12 white-bg'>
-          <filter-bar search-text-place-holder="请输入终端编号"
-                      :show-new-btn="true"
-                      new-btn-title="新增终端">
-          </filter-bar>
+          <div class='row'>
+            <div class="col-md-10">
+              <filter-bar search-text-place-holder="请输入终端编号"
+                          :show-new-btn="true"
+                          new-btn-title="新增终端">
+              </filter-bar>
+            </div>
+            <div id="bind-only" class="pull-right">
+              <label>
+                <input type="checkbox" v-model="bindOnly"> 已绑定
+              </label>
+            </div>
+          </div>      
+
           <vuetable ref="vuetable"
-            api-url="http://localhost:8080/terminal/search"
+            api-url="http://localhost:8080/terminals"
             :fields="fields"
             pagination-path=""
             :per-page="20" 
             @vuetable:pagination-data="onPaginationData"
             :append-params="moreParams"
-            :css="css.table"
-          >              
+            :css="css.table">              
             <template slot="actions" scope="props">
               <div class="custom-actions">              
                 <button class="btn btn-xs btn-primary"
@@ -37,14 +54,16 @@
               </div>
             </template>
           </vuetable>
+
           <div>
             <vuetable-pagination-info ref="paginationInfo"
-              info-class="pull-left"
-            ></vuetable-pagination-info>
+              info-class="pull-left">
+            </vuetable-pagination-info>
+
             <vuetable-pagination-bootstrap ref="pagination" 
               class="pull-right"
-              @vuetable-pagination:change-page="onChangePage"
-            ></vuetable-pagination-bootstrap>
+              @vuetable-pagination:change-page="onChangePage">
+            </vuetable-pagination-bootstrap>
           </div>
         </div>
       </div>
@@ -61,6 +80,8 @@ import FilterBar from '../FilterBar'
 import VueEvents from 'vue-events'
 import CssConfig from '../style'
 import EditTerminalModal from './EditTerminalModal'
+import ConfirmModal from './ConfirmModal'
+import api from '../../api'
 
 Vue.use(VueEvents)
 Vue.component('filter-bar', FilterBar)
@@ -71,7 +92,8 @@ export default {
     Vuetable,
     VuetablePaginationBootstrap,
     VuetablePaginationInfo,
-    EditTerminalModal
+    EditTerminalModal,
+    ConfirmModal
   },
   mounted () {
     this.$events.$on('filter-set', eventData => this.onFilterSet(eventData))
@@ -80,6 +102,8 @@ export default {
   },
   data () {
     return {
+      bindOnly: false,
+      showConfirmModal: false,
       selectTerminal: '',
       selectTerminalId: 0,
       showEditTerminalModal: false,
@@ -130,6 +154,13 @@ export default {
       ]
     }
   },
+  watch: {
+    bindOnly: function () {
+      this.moreParams = Object.assign(this.moreParams, {'bind_only': this.bindOnly})
+      console.log(this.moreParams)
+      Vue.nextTick(() => this.$refs.vuetable.refresh())
+    }
+  },
   methods: {
     onPaginationData (paginationData) {
       this.$refs.pagination.setPaginationData(paginationData)
@@ -146,7 +177,19 @@ export default {
       console.log(data.terminalNum, index)
     },
     onDelTerminal (data, index) {
-
+      this.selectTerminalId = data.terminalid
+      this.showConfirmModal = true
+      console.log('this.showConfirmModal: ' + this.showConfirmModal)
+    },
+    onConfirm () {
+      api.request('delete', '/terminals/' + this.selectTerminalId, null)
+        .then(response => {
+          this.showConfirmModal = false
+          Vue.nextTick(() => this.$refs.vuetable.refresh())
+        })
+        .catch(error => {
+          console.log('delete terminal fail: ' + error)
+        })
     },
     onFilterSet (filterText) {
       this.moreParams = {
@@ -159,17 +202,14 @@ export default {
       Vue.nextTick(() => this.$refs.vuetable.refresh())
     },
     onNewTerminal () {
-      this.selectUser = {type: null, account: '', name: '', pwd: '', parentuserid: null}
-      this.accountReadOnly = false
+      this.selectTerminalId = 0
+      this.selectTerminal = ''
       this.showEditTerminalModal = true
     },
-    onEditTerminalOk (user) {
+    onEditTerminalOk (terNum) {
       this.showEditTerminalModal = false
-      Object.assign(this.selectUser, user)
+      // Object.assign(this.selectTerminal, terNum)
       Vue.nextTick(() => this.$refs.vuetable.refresh())
-    },
-    formatSwitch (value) {
-      return value === false ? '关' : '开'
     }
   }
 }
@@ -208,5 +248,10 @@ table.dataTable thead .sorting_desc:after {
 .white-bg {
   background-color: #fff;
   padding-top: 20px;
+}
+
+#bind-only {
+  margin-top: 8px;
+  margin-right: 20px;
 }
 </style>

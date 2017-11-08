@@ -1,147 +1,139 @@
 <template>
-  <section class="content">
-    <div class="row center-block">
-      <h2>Data tables</h2>
-      <div class="col-md-12">
-        <div class="box">
-          <div class="box-header">
-            <h3 class="box-title">Data Table With Full Features</h3>
-          </div>
-          <!-- /.box-header -->
-          <div class="box-body">
-            <div class="dataTables_wrapper form-inline dt-bootstrap" id="example1_wrapper">
-              <div class="row">
-                <div class="col-sm-6">
-                  <div id="example1_length" class="dataTables_length">
+  <div>
+    <section class='content'>
+      <div class='row center-block'>
+        <div class='col-md-12 white-bg'>
 
-                  </div>
-                </div>
-              </div>
+          <filter-bar search-text-place-holder="请输入病人姓名或者终端编号"
+                      :show-new-btn="false"
+                      new-btn-title="">
+          </filter-bar>
+    
+          <vuetable ref="vuetable"
+            api-url="http://localhost:8080/datas"
+            :fields="fields"
+            pagination-path=""
+            :per-page="20" 
+            @vuetable:pagination-data="onPaginationData"
+            :append-params="moreParams"
+            :css="css.table">
+          </vuetable>
 
-              <div class="row">
-                <div class="col-sm-12 table-responsive">
-                  <table aria-describedby="example1_info" role="grid" id="example1" class="table table-bordered table-striped dataTable">
-                    <thead>
-                      <tr role="row">
-                        <th aria-label="Rendering engine: activate to sort column descending" aria-sort="ascending" style="width: 167px;" colspan="1" rowspan="1" aria-controls="example1" tabindex="0" class="sorting_asc">Rendering engine</th>
-                        <th aria-label="Browser: activate to sort column ascending" style="width: 207px;" colspan="1" rowspan="1" aria-controls="example1" tabindex="0" class="sorting">Browser</th>
-                        <th aria-label="Platform(s): activate to sort column ascending" style="width: 182px;" colspan="1" rowspan="1" aria-controls="example1" tabindex="0" class="sorting">Platform(s)</th>
-                        <th aria-label="Engine version: activate to sort column ascending" style="width: 142px;" colspan="1" rowspan="1" aria-controls="example1" tabindex="0" class="sorting">Engine version</th>
-                        <th aria-label="CSS grade: activate to sort column ascending" style="width: 101px;" colspan="1" rowspan="1" aria-controls="example1" tabindex="0" class="sorting">CSS grade</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr class="even" role="row">
-                        <td class="sorting_1">Blink</td>
-                        <td>Iridium  54.0</td>
-                        <td>GNU/Linux</td>
-                        <td>54</td>
-                        <td>A</td>
-                      </tr>
-                      <tr class="odd" role="row">
-                        <td class="sorting_1">Gecko</td>
-                        <td>Firefox 1.0</td>
-                        <td>Win 98+ / OSX.2+</td>
-                        <td>1.7</td>
-                        <td>A</td>
-                      </tr>
-                      <tr class="even" role="row">
-                        <td class="sorting_1">Gecko</td>
-                        <td>Firefox 1.5</td>
-                        <td>Win 98+ / OSX.2+</td>
-                        <td>1.8</td>
-                        <td>A</td>
-                      </tr>
-                      <tr class="odd" role="row">
-                        <td class="sorting_1">Gecko</td>
-                        <td>Firefox 2.0</td>
-                        <td>Win 98+ / OSX.2+</td>
-                        <td>1.8</td>
-                        <td>A</td>
-                      </tr>
-                      <tr class="even" role="row">
-                        <td class="sorting_1">Gecko</td>
-                        <td>Firefox 3.0</td>
-                        <td>Win 2k+ / OSX.3+</td>
-                        <td>1.9</td>
-                        <td>A</td>
-                      </tr>
-                      <tr class="odd" role="row">
-                        <td class="sorting_1">Gecko</td>
-                        <td>Camino 1.0</td>
-                        <td>OSX.2+</td>
-                        <td>1.8</td>
-                        <td>A</td>
-                      </tr>
-                      <tr class="even" role="row">
-                        <td class="sorting_1">Gecko</td>
-                        <td>Camino 1.5</td>
-                        <td>OSX.3+</td>
-                        <td>1.8</td>
-                        <td>A</td>
-                      </tr>
-                      <tr class="odd" role="row">
-                        <td class="sorting_1">Gecko</td>
-                        <td>Netscape 7.2</td>
-                        <td>Win 95+ / Mac OS 8.6-9.2</td>
-                        <td>1.7</td>
-                        <td>A</td>
-                      </tr>
-                      <tr class="even" role="row">
-                        <td class="sorting_1">Gecko</td>
-                        <td>Netscape Browser 8</td>
-                        <td>Win 98SE+</td>
-                        <td>1.7</td>
-                        <td>A</td>
-                      </tr>
-                      <tr class="odd" role="row">
-                        <td class="sorting_1">Gecko</td>
-                        <td>Netscape Navigator 9</td>
-                        <td>Win 98+ / OSX.2+</td>
-                        <td>1.8</td>
-                        <td>A</td>
-                      </tr>
-                      <tr class="even" role="row">
-                        <td class="sorting_1">Gecko</td>
-                        <td>Mozilla 1.0</td>
-                        <td>Win 95+ / OSX.1+</td>
-                        <td>1</td>
-                        <td>A</td>
-                      </tr>
-                    </tbody>
-                    <tfoot>
-                      <tr>
-                        <th colspan="1" rowspan="1">Rendering engine</th>
-                        <th colspan="1" rowspan="1">Browser</th>
-                        <th colspan="1" rowspan="1">Platform(s)</th>
-                        <th colspan="1" rowspan="1">Engine version</th>
-                        <th colspan="1" rowspan="1">CSS grade</th>
-                      </tr>
-                    </tfoot>
-                  </table>
-                </div>
-              </div>
-            </div>
-            <!-- /.box-body -->
+          <div>
+            <vuetable-pagination-info ref="paginationInfo"
+              info-class="pull-left">
+            </vuetable-pagination-info>
+
+            <vuetable-pagination-bootstrap ref="pagination" 
+              class="pull-right"
+              @vuetable-pagination:change-page="onChangePage">
+            </vuetable-pagination-bootstrap>
           </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
+  </div>
 </template>
 
 <script>
-import $ from 'jquery'
-// Require needed datatables modules
-import 'datatables.net'
-import 'datatables.net-bs'
+import Vuetable from 'vuetable-2/src/components/Vuetable'
+import VuetablePaginationInfo from 'vuetable-2/src/components/VuetablePaginationInfo'
+import VuetablePaginationBootstrap from '../VuetablePaginationBootstrap'
+import Vue from 'vue'
+import FilterBar from '../FilterBar'
+import VueEvents from 'vue-events'
+import CssConfig from '../style'
+
+Vue.use(VueEvents)
+Vue.component('filter-bar', FilterBar)
 
 export default {
-  name: 'Tables',
+  name: 'terminals',
+  components: {
+    Vuetable,
+    VuetablePaginationBootstrap,
+    VuetablePaginationInfo
+  },
   mounted () {
-    this.$nextTick(() => {
-      $('#example1').DataTable()
-    })
+    this.$events.$on('filter-set', eventData => this.onFilterSet(eventData))
+    this.$events.$on('filter-reset', e => this.onFilterReset())
+    this.$events.$on('new-item', e => this.onNewTerminal())
+  },
+  data () {
+    return {
+      css: CssConfig,
+      moreParams: {},
+      fields: [
+        {
+          name: '__sequence',
+          title: '#',
+          titleClass: 'center aligned',
+          dataClass: 'right aligned'
+        },
+        {
+          name: 'dataId',
+          title: '数据ID'
+          // sortField: 'name',
+          // titleClass: 'center aligned',
+          // dataClass: 'right aligned',
+          // callback: 'formatNumber',
+          // visible: false
+        },
+        {
+          name: 'terminalNum',
+          title: '终端编号'
+        },
+        {
+          name: 'fileName',
+          title: '文件名'
+        },
+        {
+          name: 'dataType',
+          title: '数据类型',
+          callback: 'formatType'
+        },
+        {
+          name: 'createData',
+          title: '创建时间'
+        },
+        {
+          name: 'endTime',
+          title: '结束时间'
+        },
+        {
+          name: 'patientName',
+          title: '病人姓名'
+        }
+      ]
+    }
+  },
+  methods: {
+    onPaginationData (paginationData) {
+      this.$refs.pagination.setPaginationData(paginationData)
+      this.$refs.paginationInfo.setPaginationData(paginationData)
+    },
+    onChangePage (page) {
+      this.$refs.vuetable.changePage(page)
+    },
+    onFilterSet (filterText) {
+      this.moreParams = {
+        'filter': filterText
+      }
+      Vue.nextTick(() => this.$refs.vuetable.refresh())
+    },
+    onFilterReset () {
+      this.moreParams = {}
+      Vue.nextTick(() => this.$refs.vuetable.refresh())
+    },
+    formatType (value) {
+      switch (value) {
+        case 0: return '波形'
+        case 1: return '血压'
+        case 2: return '事件'
+        case 4: return '血氧'
+      }
+      return value === false ? '关' : '开'
+    }
   }
 }
 </script>
@@ -165,14 +157,24 @@ table.dataTable thead .sorting_desc:after {
 }
 
 table.dataTable thead .sorting:after {
-  content: "\f0dc";
+  content: '\f0dc';
 }
 
 table.dataTable thead .sorting_asc:after {
-  content: "\f0dd";
+  content: '\f0dd';
 }
 
 table.dataTable thead .sorting_desc:after {
-  content: "\f0de";
+  content: '\f0de';
+}
+
+.white-bg {
+  background-color: #fff;
+  padding-top: 20px;
+}
+
+#bind-only {
+  margin-top: 8px;
+  margin-right: 20px;
 }
 </style>

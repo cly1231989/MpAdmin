@@ -1,39 +1,39 @@
-<template> 
+<template>
   <transition name="modal">
     <div class="modal modal-mask" style="display: block">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close" @click="$emit('close')"><span aria-hidden="true">&times;</span></button>
-            <h4 class="modal-title" id="exampleModalLabel">编辑用户</h4>            
+            <h4 class="modal-title" id="exampleModalLabel">编辑用户</h4>
           </div>
-          
+
           <div class="modal-body">
             <div>
               <form>
                 <div class="form-group">
-                  <label for="recipient-name" class="col-form-label">账号:</label>                  
+                  <label for="recipient-name" class="col-form-label">账号:</label>
                   <input v-model="user.account" type="text" class="form-control" id="recipient-name" :readonly="accountReadOnly">
-                  <span class="text-danger" v-if="showNoAccountError">请输入账号</span>       
+                  <span class="text-danger" v-if="showNoAccountError">请输入账号</span>
                 </div>
-                <div class="form-group">              
-                  <label for="message-text" class="col-form-label">密码:</label>                  
+                <div class="form-group">
+                  <label for="message-text" class="col-form-label">密码:</label>
                   <input v-model="user.pwd" type="password" maxlength="16" class="form-control"></input>
-                  <span class="text-danger" v-if="showNoPwdError">请输入密码</span>                
+                  <span class="text-danger" v-if="showNoPwdError">请输入密码</span>
                 </div>
                 <div class="form-group">
                   <label for="message-text" class="col-form-label">确认密码:</label>
                   <input v-model="passwordRepeat" type="password" maxlength="16" class="form-control"></input>
-                  <span class="text-danger" v-if="showPwdNotSameError">两次密码不一致</span>                
+                  <span class="text-danger" v-if="showPwdNotSameError">两次密码不一致</span>
                 </div>
                 <div class="form-group">
-                  <label for="message-text" class="col-form-label">用户名:</label>                  
+                  <label for="message-text" class="col-form-label">用户名:</label>
                   <input v-model="user.name" class="form-control"></input>
-                  <span class="text-danger" v-if="showNoNameError">请输入用户名</span>                
+                  <span class="text-danger" v-if="showNoNameError">请输入用户名</span>
                 </div>
                 <div class="form-group" v-if="currentUserId !== user.id">
-                  <label for="message-text" class="col-form-label">类型:</label>               
-                  <select v-model="user.type">                
+                  <label for="message-text" class="col-form-label">类型:</label>
+                  <select v-model="user.type">
                     <option value="2" v-if="currentUserType < 2">经销商</option>
                     <option value="3" v-if="currentUserType < 3">中心</option>
                     <option value="4" v-if="currentUserType < 4">医院</option>
@@ -41,46 +41,46 @@
                     <option value="6" v-if="currentUserType < 6">会诊</option>
                     <option value="7" v-if="currentUserType < 7">分析师</option>
                   </select>
-                  <span class="text-danger" v-if="showNoTypeError">请选择用户类型</span>            
+                  <span class="text-danger" v-if="showNoTypeError">请选择用户类型</span>
                 </div>
                 <div class="form-group" v-if="currentUserId !== user.id">
-                  <label for="message-text" class="col-form-label">上级用户:</label>                  
-                  <select v-model="user.parentuserid">            
-                    <option v-for="u in users" v-if="u.type < user.type" :value="u.id">{{u.name}}</option>                     
+                  <label for="message-text" class="col-form-label">上级用户:</label>
+                  <select v-model="user.parentuserid">
+                    <option v-for="u in users" v-if="u.type < user.type" :value="u.id">{{u.name}}</option>
                   </select>
-                  <span class="text-danger" v-if="showNoParentError">请选择上级用户</span>                 
+                  <span class="text-danger" v-if="showNoParentError">请选择上级用户</span>
                 </div>
                 <div class="form-group">
-                  <label for="message-text" class="col-form-label">电话:</label>                 
+                  <label for="message-text" class="col-form-label">电话:</label>
                   <input v-model="user.phone" class="form-control"></textarea>
                 </div>
                 <div class="form-group">
-                  <label for="message-text" class="col-form-label">地址:</label>              
+                  <label for="message-text" class="col-form-label">地址:</label>
                   <input v-model="user.address" class="form-control"></textarea>
                 </div>
                 <div class="form-group">
-                  <label for="message-text" class="col-form-label">血氧技术开关:</label>                  
-                  <select v-model="user.spo2Warning">                
+                  <label for="message-text" class="col-form-label">血氧技术开关:</label>
+                  <select v-model="user.spo2Warning">
                     <option value="true">开</option>
-                    <option value="false">关</option>          
+                    <option value="false">关</option>
                   </select>
                 </div>
                 <div class="form-group">
-                  <label for="message-text" class="col-form-label">体温技术开关:</label>               
-                  <select v-model="user.btwarning">                
+                  <label for="message-text" class="col-form-label">体温技术开关:</label>
+                  <select v-model="user.btwarning">
                     <option value="true">开</option>
-                    <option value="false">关</option>          
+                    <option value="false">关</option>
                   </select>
                 </div>
                 <div class="form-group">
-                  <label for="message-text" class="col-form-label">血压显示模式:</label>                  
+                  <label for="message-text" class="col-form-label">血压显示模式:</label>
                   <input v-model="user.bpshowMode" type="number" class="form-control"></textarea>
                 </div>
                 <span class="text-danger" v-if="showFailedError">修改用户信息失败: {{failedReason}}</span>
               </form>
             </div>
           </div>
-            
+          
           <div class="modal-footer">
             <button type="button" class="btn btn-outline-info" @click="$emit('close')">关闭</button>
             <button type="button" class="btn btn-primary" @click="onChangeUser">确定</button>
@@ -88,7 +88,7 @@
         </div>
       </div>
     </div>
-  </transition> 
+  </transition>
 </template>
 
 <script>
@@ -161,8 +161,14 @@ export default {
         return
       }
 
-      api.request('post', '/user/edit', this.user)
-      .then(response => {
+      var promise = null
+      if (this.user.id === 0) {
+        promise = api.request('post', '/users', this.user)
+      } else {
+        promise = api.request('put', '/users/' + this.user.id, this.user)
+      }
+      
+      promise.then(response => {
         this.$emit('editUserOk', this.user)
       })
       .catch(error => {
@@ -172,7 +178,7 @@ export default {
     }
   },
   created: function () {
-    api.request('get', '/user/all', null)
+    api.request('get', '/users', null)
     .then(response => {
       var data = response.data
       if (!data.error) {
@@ -181,7 +187,7 @@ export default {
     })
     .catch(error => {
       this.$store.commit('TOGGLE_LOADING')
-      console.log('error http://localhost:8080/user/all: ' + error)
+      console.log('error http://localhost:8080/users: ' + error)
     })
   }
 }

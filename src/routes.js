@@ -14,7 +14,6 @@ import PatientsView from './components/views/PatientList.vue'
 import DatasView from './components/views/DataList.vue'
 import UsersView from './components/views/UserList.vue'
 import TerminalsView from './components/views/TerminalList.vue'
-import TerminalBindingsView from './components/views/TerminalBindingList.vue'
 
 // Routes
 const routes = [
@@ -67,7 +66,7 @@ const routes = [
       {
         path: 'patients',
         component: PatientsView,
-        name: 'Patients'
+        name: '病人管理'
       },
       {
         path: 'users',
@@ -77,17 +76,12 @@ const routes = [
       {
         path: 'terminals',
         component: TerminalsView,
-        name: 'Terminals'
-      },
-      {
-        path: 'terminalbindings',
-        component: TerminalBindingsView,
-        name: 'Terminalbindings'
+        name: '终端管理'
       },
       {
         path: 'datas',
         component: DatasView,
-        name: 'Datas'
+        name: '数据管理'
       }
     ]
   }, {

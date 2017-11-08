@@ -16,14 +16,14 @@
                       new-btn-title="新增用户">
           </filter-bar>
           <vuetable ref="vuetable"
-            api-url="http://localhost:8080/user/all"
+            api-url="http://localhost:8080/users"
             :fields="fields"
             pagination-path=""
-            :per-page="20" 
+            :per-page="20"
             @vuetable:pagination-data="onPaginationData"
             :append-params="moreParams"
             :css="css.table"
-          >              
+          >
             <template slot="actions" scope="props">
               <div class="custom-actions">              
                 <button class="btn btn-xs btn-primary"
@@ -42,6 +42,7 @@
             <vuetable-pagination-info ref="paginationInfo"
               info-class="pull-left"
             ></vuetable-pagination-info>
+            
             <vuetable-pagination-bootstrap ref="pagination" 
               class="pull-right"
               @vuetable-pagination:change-page="onChangePage"
@@ -175,7 +176,7 @@ export default {
       Vue.nextTick(() => this.$refs.vuetable.refresh())
     },
     onNewUser () {
-      this.selectUser = {type: null, account: '', name: '', pwd: '', parentuserid: null}
+      this.selectUser = {id: 0, type: null, account: '', name: '', pwd: '', parentuserid: null}
       this.accountReadOnly = false
       this.showEditUserModal = true
     },
