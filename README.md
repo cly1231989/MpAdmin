@@ -1,3 +1,9 @@
+1. 安装Nodejs
+2. 安装vue-cli
+3. 下载phantomjs，放到Nodejs安装目录中
+
+npm run dev时，如果出现：Module build failed: Error: Missing binding xxx\node_modules\node-sass\vendor\win32-x64-57\binding.node, 到https://github.com/sass/node-sass/releases 下载对应版本(比如win32-x64-57)的node-sass的binding.node，修改名称为binding.node后放到xxx\node_modules\node-sass\vendor\win32-x64-57目录中。
+
 **CoPilot** is a fully responsive admin template that is forked from [AdminLTE](https://almsaeedstudio.com). The difference here is that this repo is tailored to use with [Vue.js](https://vuejs.org). The UI is based on the [Bootstrap 3](https://github.com/twbs/bootstrap) framework. Highly customizable and easy to use. Fits many screen resolutions from small mobile devices to large desktops.
 
 <a href="https://copilot.misterGF.io" target="_blank">✈️️ Take it for a spin.</a>
