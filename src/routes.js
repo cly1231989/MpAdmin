@@ -18,6 +18,10 @@ import TerminalsView from './components/views/TerminalList.vue'
 // Routes
 const routes = [
   {
+    path: '/',
+    redirect: {name: '病人管理'}
+  },
+  {
     path: '/login',
     component: LoginView
   },
