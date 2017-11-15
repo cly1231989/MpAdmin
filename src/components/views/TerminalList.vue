@@ -34,7 +34,7 @@
           </div>      
 
           <vuetable ref="vuetable"
-            api-url="http://localhost:8080/terminals"
+            :api-url="getTerminalsUrl"
             :fields="fields"
             pagination-path=""
             :per-page="20" 
@@ -82,6 +82,7 @@ import CssConfig from '../style'
 import EditTerminalModal from './EditTerminalModal'
 import ConfirmModal from './ConfirmModal'
 import api from '../../api'
+import config from '../../config/index'
 
 Vue.use(VueEvents)
 Vue.component('filter-bar', FilterBar)
@@ -102,6 +103,7 @@ export default {
   },
   data () {
     return {
+      getTerminalsUrl: config.serverURI + '/terminals',
       bindOnly: false,
       showConfirmModal: false,
       selectTerminal: '',

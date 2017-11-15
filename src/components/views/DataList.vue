@@ -10,7 +10,7 @@
           </filter-bar>
     
           <vuetable ref="vuetable"
-            api-url="http://localhost:8080/datas"
+            :api-url="getDatasUrl"
             :fields="fields"
             pagination-path=""
             :per-page="20" 
@@ -43,6 +43,7 @@ import Vue from 'vue'
 import FilterBar from '../FilterBar'
 import VueEvents from 'vue-events'
 import CssConfig from '../style'
+import config from '../../config/index'
 
 Vue.use(VueEvents)
 Vue.component('filter-bar', FilterBar)
@@ -61,6 +62,7 @@ export default {
   },
   data () {
     return {
+      getDatasUrl: config.serverURI + '/datas',
       css: CssConfig,
       moreParams: {},
       fields: [

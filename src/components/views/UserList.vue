@@ -16,7 +16,7 @@
                       new-btn-title="新增用户">
           </filter-bar>
           <vuetable ref="vuetable"
-            api-url="http://localhost:8080/users"
+            :api-url="getUsersUrl"
             :fields="fields"
             pagination-path=""
             :per-page="20"
@@ -63,6 +63,7 @@ import FilterBar from '../FilterBar'
 import VueEvents from 'vue-events'
 import CssConfig from '../style'
 import EditUserModal from './EditUserModal'
+import config from '../../config/index'
 
 Vue.use(VueEvents)
 Vue.component('filter-bar', FilterBar)
@@ -83,6 +84,7 @@ export default {
   data () {
     return {
       selectUser: null,
+      getUsersUrl: config.serverURI + '/users',
       accountReadOnly: true,
       showEditUserModal: false,
       css: CssConfig,
