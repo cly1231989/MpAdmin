@@ -1,5 +1,7 @@
+import {serverUrl, subDomain} from '../../config/deploy.env'
+
 export default {
-  serverURI: 'http://127.0.0.1:8080/',
+  serverURI: serverUrl + subDomain,
   fixedLayout: false,
   hideLogoOnMobile: false
 }

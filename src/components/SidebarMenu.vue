@@ -7,17 +7,17 @@
       </router-link>
     </li>
     <li class="pageLink" v-on:click="toggleMenu">
-      <router-link to="/admin/terminals"><i class="fa fa-heart"></i>
+      <router-link :to="{ name: '终端管理'}"><i class="fa fa-heart"></i>
         <span class="page">终端管理</span>
       </router-link>
     </li>
     <li class="pageLink" v-on:click="toggleMenu">
-      <router-link to="/admin/patients"><i class="fa fa-user-md"></i>
+      <router-link :to="{ name: '病人管理'}"><i class="fa fa-user-md"></i>
         <span class="page">病人列表</span>
       </router-link>
     </li>
     <li class="pageLink" v-on:click="toggleMenu">
-      <router-link to="/admin/datas"><i class="fa fa-database"></i>
+      <router-link :to="{ name: '数据管理'}"><i class="fa fa-database"></i>
         <span class="page">数据列表</span>
       </router-link>
     </li>

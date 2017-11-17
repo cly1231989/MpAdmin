@@ -1,6 +1,7 @@
 // Import System requirements
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import { subDomain } from '../config/deploy.env'
 
 import { sync } from 'vuex-router-sync'
 import routes from './routes'
@@ -61,7 +62,7 @@ router.beforeEach((to, from, next) => {
   if (to.matched.some(record => record.meta.auth) && ((store.state.token === null) || (store.state.expire < Date.now()))) {
     window.console.log('Not authenticated')
     next({
-      path: '/login',
+      path: subDomain + '/login',
       query: { redirect: to.fullPath }
     })
   } else {
