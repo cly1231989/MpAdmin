@@ -2,7 +2,7 @@
   <ul class="sidebar-menu">
     <li class="header">后台管理</li>
     <li class="pageLink" v-on:click="toggleMenu">
-      <router-link to="/admin/users"><i class="fa fa-user"></i>
+      <router-link :to="{ name: '用户管理'}"><i class="fa fa-user"></i>
         <span class="page">用户管理</span>
       </router-link>
     </li>
