@@ -55,44 +55,29 @@ export default {
       .then(response => {
         this.toggleLoading()
 
-        var data = response.data
-        /* Checking if error object was returned from the server */
-        if (data.error) {
-          var errorName = data.error.name
-          if (errorName) {
-            this.response = errorName === 'InvalidCredentialsError'
-            ? 'Username/Password incorrect. Please try again.'
-            : errorName
-          } else {
-            this.response = data.error
-          }
-
-          return
-        }
-
         /* Setting user in the state and caching record to the localStorage */
+        var data = response.data
         auth.saveAuthInfo(data.token, true)
-        this.$router.push(this.$route.query.redirect)
-        // if (data.user) {
-        //   var token = 'Bearer ' + data.token
-        //   Vue.http.headers.common['Authorization'] = token;
-
-        //   this.$store.commit('SET_USER', data.user)
-        //   this.$store.commit('SET_TOKEN', token)
-
-        //   if (window.localStorage) {
-        //     window.localStorage.setItem('user', JSON.stringify(data.user))
-        //     window.localStorage.setItem('jwt_token', token)
-        //   }
-
-        //   this.$router.push(data.redirect)
-        // }
+        if (this.$route.query.redirect) {
+          this.$router.push(this.$route.query.redirect)
+        } else {
+          this.$router.push({name: '病人管理'})
+        }
+        // window.console.log('route')
+        // window.console.log(this.$route)
+        // this.$router.push(this.$route.query.redirect)
       })
       .catch(error => {
+        window.console.log('error:')
+        window.console.log(error.response)
+        
         this.$store.commit('TOGGLE_LOADING')
-        console.log('error: ' + error)
-
-        this.response = error.toString()
+        if (error.response.data.exception.indexOf('BadCredentialsException') !== -1) {
+          this.response = '用户名或者密码错误，请重试.'
+        } else {
+          this.response = error.toString()
+        }
+                
         this.toggleLoading()
       })
     },

@@ -172,7 +172,7 @@ export default {
         this.$emit('editUserOk', this.user)
       })
       .catch(error => {
-        this.failedReason = error
+        this.failedReason = error.response.data.message
         this.showFailedError = true
       })
     }

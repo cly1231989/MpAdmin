@@ -35,7 +35,7 @@ export default {
           saveAuthInfoImp(data.token, true)
         }
       })
-    }, 1000 * 30)
+    }, 1000 * 600)
     store.commit('SET_REFRESHTIMER', refreshTimer)
   },
 
@@ -43,13 +43,19 @@ export default {
     // Vue.http.headers.common['Authorization'] = ''
     axios.defaults.headers.common['Authorization'] = ''
 
+    if (store.state.refreshTimer != null) {
+      clearInterval(store.state.refreshTimer)
+    }
+
     store.commit('SET_USER', null)
     store.commit('SET_USERID', null)
     store.commit('SET_USERNAME', null)
     store.commit('SET_TOKEN', null)
+    store.commit('SET_EXPIRE', null)
+    store.commit('SET_TYPE', null)
 
     if (window.localStorage) {
-      window.localStorage.setItem('jwt_token', null)
+      window.localStorage.removeItem('jwt_token')
     }
   },
 

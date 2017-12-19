@@ -77,7 +77,7 @@ export default {
         this.$emit('editTerminalOk', this.terNum)
       })
       .catch(error => {
-        this.failedReason = error
+        this.failedReason = error.response.data.message
         this.showFailedError = true
       })
     }

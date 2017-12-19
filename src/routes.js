@@ -13,11 +13,13 @@ import TerminalsView from './components/views/TerminalList.vue'
 const routes = [
   {
     path: subDomain + '/',
-    redirect: {name: '病人管理'}
+    redirect: {name: '病人管理'},
+    name: '/'
   },
   {
     path: subDomain + '/login',
-    component: LoginView
+    component: LoginView,
+    name: '登录'
   },
   {
     path: subDomain + '/admin',
