@@ -66,11 +66,19 @@ export default {
       css: CssConfig,
       moreParams: {},
       fields: [
+        // {
+        //   name: '__sequence',
+        //   title: '#',
+        //   titleClass: 'center aligned',
+        //   dataClass: 'right aligned'
+        // },
         {
-          name: '__sequence',
-          title: '#',
-          titleClass: 'center aligned',
-          dataClass: 'right aligned'
+          name: 'id',
+          title: '索引'
+        },
+        {
+          name: 'username',
+          title: '用户'
         },
         {
           name: 'name',
@@ -90,21 +98,37 @@ export default {
           title: '性别'
         },
         {
-          name: 'height',
-          title: '身高'
+          name: 'outpatientnumber',
+          title: '门诊号'
         },
         {
-          name: 'weight',
-          title: '体重'
+          name: 'hospitalnumber',
+          title: '住院号'
         },
         {
-          name: 'phone',
-          title: '电话'
+          name: 'bednumber',
+          title: '床号'
         },
         {
-          name: 'address',
-          title: '地址'
+          name: 'symptom',
+          title: '症状'
         },
+        // {
+        //   name: 'height',
+        //   title: '身高'
+        // },
+        // {
+        //   name: 'weight',
+        //   title: '体重'
+        // },
+        // {
+        //   name: 'phone',
+        //   title: '电话'
+        // },
+        // {
+        //   name: 'address',
+        //   title: '地址'
+        // },
         {
           name: 'applydoctor',
           title: '申请医生'
@@ -113,25 +137,17 @@ export default {
           name: 'nurse',
           title: '护士'
         },
-        {
-          name: 'outpatientnumber',
-          title: '门诊号'
-        },
-        {
-          name: 'bednumber',
-          title: '床号'
-        },
-        {
-          name: 'department',
-          title: '科室'
-        },
-        {
-          name: 'symptom',
-          title: '症状'
-        },
+        // {
+        //   name: 'department',
+        //   title: '科室'
+        // },
         {
           name: 'level',
           title: '护理级别'
+        },
+        {
+          name: 'category',
+          title: '费别'
         },
         {
           name: 'inhospitaldate',

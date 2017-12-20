@@ -1,6 +1,6 @@
 export default {
   table: {
-    tableClass: 'table table-striped table-bordered table-hover',
+    tableClass: 'table table-bordered table-hover',
     ascendingIcon: 'glyphicon glyphicon-chevron-up',
     descendingIcon: 'glyphicon glyphicon-chevron-down',
     handleIcon: 'glyphicon glyphicon-menu-hamburger',

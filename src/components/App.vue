@@ -23,3 +23,16 @@
     }
   }
 </script>
+
+<style>
+table.table-bordered{
+  border:1px solid #C8C8C8;
+  margin-top:20px;
+}
+table.table-bordered > thead > tr > th{
+  border:1px solid #C8C8C8;
+}
+table.table-bordered > tbody > tr > td{
+  border:1px solid #C8C8C8;
+}
+</style>

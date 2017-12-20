@@ -66,12 +66,12 @@ export default {
       css: CssConfig,
       moreParams: {},
       fields: [
-        {
-          name: '__sequence',
-          title: '#',
-          titleClass: 'center aligned',
-          dataClass: 'right aligned'
-        },
+        // {
+        //   name: '__sequence',
+        //   title: '#',
+        //   titleClass: 'center aligned',
+        //   dataClass: 'right aligned'
+        // },
         {
           name: 'dataId',
           title: '数据ID'
@@ -84,6 +84,10 @@ export default {
         {
           name: 'terminalNum',
           title: '终端编号'
+        },
+        {
+          name: 'patientName',
+          title: '病人姓名'
         },
         {
           name: 'fileName',
@@ -101,10 +105,6 @@ export default {
         {
           name: 'endTime',
           title: '结束时间'
-        },
-        {
-          name: 'patientName',
-          title: '病人姓名'
         }
       ]
     }
@@ -130,11 +130,12 @@ export default {
     formatType (value) {
       switch (value) {
         case 0: return '波形'
-        case 1: return '血压'
+        case 1: return '趋势'
         case 2: return '事件'
-        case 4: return '血氧'
+        case 3: return '血压'
       }
-      return value === false ? '关' : '开'
+
+      return ''
     }
   }
 }
