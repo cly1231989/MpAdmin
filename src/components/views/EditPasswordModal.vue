@@ -81,7 +81,7 @@ export default {
         return
       }
 
-      api.request('put', '/users/' + this.currentUserId + '/pwd', {'userId': 0, 'oldPwd': this.oldPwd, 'newPwd': this.pwd})
+      api.request('put', '/users/' + this.currentUserId + '/pwd', {'userId': this.currentUserId, 'oldPwd': this.oldPwd, 'newPwd': this.pwd})
         .then(response => {
           this.$emit('editPasswordOk', null)
         })
