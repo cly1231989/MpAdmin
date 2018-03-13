@@ -1,7 +1,7 @@
 import DashView from './components/Dash.vue'
 import LoginView from './components/Login.vue'
 import NotFoundView from './components/404.vue'
-import {subDomain} from '../config/deploy.env'
+// import {subDomain} from '../config/deploy.env'
 
 // Import Views - Dash
 import PatientsView from './components/views/PatientList.vue'
@@ -12,17 +12,17 @@ import TerminalsView from './components/views/TerminalList.vue'
 // Routes
 const routes = [
   {
-    path: subDomain + '/',
+    path: '/',
     redirect: {name: '病人管理'},
     name: '/'
   },
   {
-    path: subDomain + '/login',
+    path: '/login',
     component: LoginView,
     name: '登录'
   },
   {
-    path: subDomain + '/admin',
+    path: '/admin',
     component: DashView,
     meta: { auth: true },
     children: [

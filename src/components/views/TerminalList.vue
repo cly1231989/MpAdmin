@@ -22,7 +22,7 @@
           <div class='row'>
             <div class="col-md-10">
               <filter-bar search-text-place-holder="请输入终端编号"
-                          :show-new-btn="true"
+                          :show-new-btn="false"
                           new-btn-title="新增终端">
               </filter-bar>
             </div>
@@ -227,7 +227,7 @@ export default {
 @import url('/static/js/plugins/datatables/jquery.dataTables.min.css');
 */
 
-@import url('/static/js/plugins/datatables/dataTables.bootstrap.css');
+@import url('/mp/static/js/plugins/datatables/dataTables.bootstrap.css');
 
 table.dataTable thead .sorting:after,
 table.dataTable thead .sorting_asc:after,

@@ -2,21 +2,24 @@
   <div class="container container-table">
       <div class="row vertical-10p">
         <div class="container">
-          <img src="/static/img/logo.png" class="center-block logo">
-          <div class="text-center col-md-4 col-sm-offset-4">
+          <!-- <img src="/static/img/logo.png" class="center-block logo"> -->          
+          <div class="text-center col-md-4 col-sm-offset-4">            
             <!-- login form -->
             <form class="ui form loginForm"  @submit.prevent="checkCreds">
+              <div class="input-group">
+                <h3>康如来多参数后台管理系统</h3>
+              </div>
 
               <div class="input-group">
                 <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
-                <input class="form-control" name="username" placeholder="Username" type="text" v-model="username">
+                <input class="form-control" name="username" placeholder="用户名" type="text" v-model="username">
               </div>
 
               <div class="input-group">
                 <span class="input-group-addon"><i class="fa fa-lock"></i></span>
-                <input class="form-control" name="password" placeholder="Password" type="password" v-model="password">
+                <input class="form-control" name="password" placeholder="密码" type="password" v-model="password">
               </div>
-              <button type="submit" v-bind:class="'btn btn-primary btn-lg ' + loading">Submit</button>
+              <button type="submit" v-bind:class="'btn btn-primary btn-lg ' + loading">登录</button>
             </form>
 
             <!-- errors -->

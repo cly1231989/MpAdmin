@@ -204,7 +204,7 @@ export default {
 @import url('/static/js/plugins/datatables/jquery.dataTables.min.css');
 */
 
-@import url('/static/js/plugins/datatables/dataTables.bootstrap.css');
+@import url('/mp/static/js/plugins/datatables/dataTables.bootstrap.css');
 
 table.dataTable thead .sorting:after,
 table.dataTable thead .sorting_asc:after,

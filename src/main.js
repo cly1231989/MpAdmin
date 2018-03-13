@@ -1,7 +1,7 @@
 // Import System requirements
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import { subDomain } from '../config/deploy.env'
+// import { subDomain } from '../config/deploy.env'
 
 import { sync } from 'vuex-router-sync'
 import routes from './routes'
@@ -24,8 +24,9 @@ Vue.use(VueRouter)
 
 // Routing logic
 var router = new VueRouter({
+  base: '/mp/',
   routes: routes,
-  mode: 'history',
+  // mode: 'history',
   scrollBehavior: function (to, from, savedPosition) {
     return savedPosition || { x: 0, y: 0 }
   }
@@ -62,7 +63,7 @@ router.beforeEach((to, from, next) => {
   if (to.matched.some(record => record.meta.auth) && ((store.state.token === null) || (store.state.expire < Date.now()))) {
     window.console.log('Not authenticated')
     next({
-      path: subDomain + '/login',
+      path: '/login',
       query: { redirect: to.fullPath }
     })
   } else {
