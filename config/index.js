@@ -19,7 +19,7 @@ module.exports = {
   dev: {
     env: require('./dev.env'),
     port: 8050,
-    assetsSubDirectory: '/mp/static',
+    assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {},   //dev时的跨域问题可以用它解决，这样server端就不用写CorsMappings了
     // CSS Sourcemaps off by default because relative paths are "buggy"
